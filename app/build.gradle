@@ -1,8 +1,19 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+
+repositories{
+    flatDir{
+        dir 'libs'
+    }
+}
 
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     defaultConfig {
         applicationId "com.android.soundlly.intern.jisu.rxandroidpermission"
         minSdkVersion 23
@@ -25,5 +36,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:25.1.0'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile (name: 'SoundllyReceiverSDK-1.2.5-release', ext:'aar');
     testCompile 'junit:junit:4.12'
 }
