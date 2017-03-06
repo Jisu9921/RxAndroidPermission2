@@ -27,8 +27,6 @@ import com.soundlly.standalone.sdk.SoundllyResultListener;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG="TESTERR";
-    private static final String RECORD_DENIED="거부";
-    private static final String RECORD_GRANTED="승인";
     private static final String SOUNDLLY_APP_KEY="f01b8843-ac7a-49ff-a0fc-1a31c93ac1a9";
     private boolean isSoundllyInit = false;
 
