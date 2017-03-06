@@ -44,23 +44,8 @@ public class MainActivity extends AppCompatActivity {
         micPermissionBtn = (Button) findViewById(R.id.mic_permission_btn);
         sdkInitBtn = (Button) findViewById(R.id.sdk_init_btn);
 
-        Observable.just(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO))
-                .flatMap(result -> {
-                    if(result== PackageManager.PERMISSION_GRANTED){
-                        return Observable.just(RECORD_GRANTED);
-                    }
-                        return Observable.just(RECORD_DENIED);
-                    })
-                .subscribe(text->micPermissionState.setText(text));
-
-       Observable.just(isSoundllyInit)
-               .flatMap(result -> {
-                   if(result){
-                    return Observable.just("성공");
-                   }
-                   return Observable.just("");
-               })
-               .subscribe(text->sdkInitState.setText(text));
+        getMicPermissionState();
+        getSdkInitState();
 
         sdkInitBtn.setOnClickListener(v->{
             Observable.just(soundllyInit())
@@ -77,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                                 return Observable.just("마이크 권한 승인 상태 입니다");
                             }
                         })
-                        .filter(no -> no!="")
+                        .filter(no -> !no.equals(""))
                         .subscribe(msg->Toast.makeText(this,msg,Toast.LENGTH_SHORT).show());
         });
     }
@@ -97,6 +82,40 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        getMicPermissionState();
+        getSdkInitState();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(isSoundllyInit){
+            Soundlly.release();
+            isSoundllyInit=false;
+        }
+    }
+
+    private void getMicPermissionState(){
+        Observable.just(ContextCompat.checkSelfPermission(this,Manifest.permission.RECORD_AUDIO))
+                .flatMap(result->{
+                   if(result==PackageManager.PERMISSION_GRANTED){
+                       return Observable.just("마이크 권한 있음");
+                   }
+                    return Observable.just("마이크 권한 없음");
+                })
+                .subscribe(text->micPermissionState.setText(text));
+    }
+
+    private void getSdkInitState(){
+        Observable.just(isSoundllyInit)
+                .flatMap(result->{
+                  if(result){
+                      return Observable.just("초기화 성공");
+                  }
+                    return Observable.just("");
+                })
+                .filter(text -> !text.equals(""))
+                .subscribe();
     }
 
     private String soundllyInit(){
