@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -91,6 +92,10 @@ public class MainActivity extends AppCompatActivity {
             Soundlly.release();
             isSoundllyInit=false;
         }
+    }
+
+    private void testFun(){
+
     }
 
     private void getMicPermissionState(){
