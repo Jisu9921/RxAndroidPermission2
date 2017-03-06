@@ -94,9 +94,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void testFun(){
-
-    }
 
     private void getMicPermissionState(){
         Observable.just(ContextCompat.checkSelfPermission(this,Manifest.permission.RECORD_AUDIO))
